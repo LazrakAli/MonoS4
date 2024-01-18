@@ -1,0 +1,68 @@
+TD 7:
+
+Exercice A:
+
+1) La lune est le premier astre qui tourne autour de la Terre.
+2) Par ce que toute astres tournant autour d'un autre est classé ainsi seul l'astre 1 est necessaire pour les authentifier
+3) Oui l'autre astre ajouté serais une clé etrangere
+4) Oui, il suffit d'avoir un ID d'observation different
+
+Exercice B:
+
+1)
+select count(*)
+from categorie;
+
+2)
+select count(distinct idc)
+from astre;
+
+3)
+select MIN(RAYON),MAX(RAYON)
+from astre;
+
+4)
+select round(avg(rayon)/1000,2)||' milliers km' as moyenne
+from astre;
+
+5)
+select max(rayon)
+from astre;
+
+6)
+select nom,rayon
+from astre
+where rayon>= all(select rayon from astre);
+
+Exercice C:
+1)
+select idc,count(*)
+from astre
+group by idc
+order by count(*) desc;
+
+2)
+select ida2,count(*)
+from tourneautour
+group by ida2
+order by count(*) desc;
+
+3)
+select nom,count(*)
+from tourneautour,astre
+where ida2=ida
+group by ida2
+order by count(*) desc;
+
+4)
+
+select a.nom,o.dateobs,round(avg(o.valobs),0)
+from astre a, observation o
+where a.ida=o.ida
+group by a.ida,dateobs;
+
+a faire:
+    coinbase
+    binance
+    stackup
+    gw3

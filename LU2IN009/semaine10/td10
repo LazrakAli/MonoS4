@@ -1,0 +1,147 @@
+                    TD 10: PL/SQL
+
+
+
+1)
+Pour chaque projet affiche le nom du projet et la ville du projet;
+"affichage(dbms_output.put_line)"
+    pour chaque employe du projet : Affiche son nom et prenom
+    Si on n a pas trouvé d employé : Affihce pas d employé
+
+
+Affectation :=
+Loop -> End Loop;
+IF -> END LOOP;
+le / permet de compilé
+
+format de progamme:
+
+DECLARE
+    declare les variables
+    <variable> <type>;
+Begin
+    Instruction
+END; 
+/
+
+
+2/3)
+/*
+Qu est ce qu un curseur (stock le resultat d une requete): zone de travail qui permet de parcourir le resultat d une requete
+
+//declaration d un curseur et de la variable de lecture:
+    cursor listeProjets is select numproj, nomproj, villep from Projet ORDER BY nomproj;
+    varProjet listeProjets%ROWTYPE;
+
+
+//les cursor ce traite un peu comme les flux on les ouvre et ferme 
+    open <nomCursor>;
+    lire une ligne->fetch ListeProjets into varProjet
+*/
+
+DECLARE 
+    cursor listeProjets is select numproj, nomproj, villep from Projet ORDER BY nomproj;
+    varProjet listeProjets%ROWTYPE;
+    cursor ListeEmp(numP Projet.nomproj%TYPE) is select nome,prenome from employe e, Embauche b where e.numss=b.numss and b.numproj=numP;
+    varEmp listEmp%ROWTYPE;
+Begin 
+    open listeProjets;
+    LOOP 
+        fetch ListeProjets into varProjet;
+        exit when listeProjets%NotFound;
+        dbms_output.put_line('Projet: '||varProjet.nomproj||' dans la ville '||varProjet.villep);
+        open ListeEmp(varProjet.numproj);
+        fetch listeEmp into varEmp;
+        while (listeEmp%FOUND) loop
+            dbms_output.put_line('Employé: '|| r2.nome||', '|| r2.prenome);
+            fetch listeEmp into varEmp;
+        end loop;
+        if( listeEmp%rowcount=0)then 
+            dbms_output.put_line('Pas d''employé');
+        END IF;
+        close listeEmp;
+    end loop;
+    close listeProjets;
+end;  
+/
+
+4) Cours 10 slide 41 curseur implicite:
+/*
+pas de variable pas de section declare nécessaire
+*/
+Begin 
+    delete from employe where extract(year from sysdate)-extract(year from datenaiss)>=50;
+    if( sql%found ) then 
+        dbms_output.put_line(sql%rowcount || 'employé ont été supprimés!');
+    else 
+        dbms_output.put_line('Aucun employé supprimé');
+    END if;
+end;
+/
+
+5) 
+BEGIN 
+    UPDATE grille_SAL set salaire=
+        CASE
+            when salaire<=40000 then salaire*1.3;
+            when salaire<=60000 then salaire*1.2;
+            else salaire*1.3;
+        end case;
+    DBMS_OUTPUT.PUT_LINE('Nombre d''enregistrements mis à jour : ' || SQL%ROWCOUNT);
+end;
+/
+
+6) Écrire une procédure PL/SQL.
+/*
+-> procedure ne retourne rien != fonction
+-> les procedures et fonctions sont compilées et stockées, mais pas executées
+    @nomFichier -> compile et strock procedure et fonctions
+    exec nomProc -> exécute la procedure
+    select nomFonction .. from ...; appel la fonction 
+*/
+
+CREATE OR REPLACE PROCEDURE inserer_employe(
+    idE employe.NumSS%TYPE,
+    nomEmp employe.nomE%TYPE,
+    prenomEmp employe.prenomE%TYPE
+) AS 
+    varNumSS employe.NumSS%TYPE;
+BEGIN 
+    SELECT numSS INTO varNumSS FROM Employe WHERE numSS = idE;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN 
+        INSERT INTO Employe(numSS, nomE, prenomE) VALUES(idE, nomEmp, prenomEmp);
+        DBMS_OUTPUT.PUT_LINE('Nouvel employé inséré avec succès');
+END;
+/show err
+
+7)
+
+CREATE OR REPLACE PROCEDURE add_projet(
+    numP Projet.numproj%TYPE,
+    Budg Projet.budget%TYPE
+) AS
+    totale NUMBER(7) := 0;
+    monException EXCEPTION;
+BEGIN
+    -- Parcours la table Projet et calcule la somme des budgets
+    FOR rec IN (SELECT budget FROM Projet) LOOP
+        totale := totale + rec.budget;
+    END LOOP;
+    
+    -- Ajoute le nouveau budget
+    totale := totale + Budg;
+    
+    -- Vérifie si le total dépasse la limite de 400000
+    IF totale <= 400000 THEN
+        INSERT INTO Projet(numproj, budget) VALUES(numP, Budg);
+        DBMS_OUTPUT.PUT_LINE('Nouveau projet ajouté avec succès.');
+    ELSE
+        RAISE monException;
+    END IF;
+    
+EXCEPTION
+    WHEN monException THEN 
+        DBMS_OUTPUT.PUT_LINE('Pas assez de budget pour ajouter un nouveau projet.');
+END;
+/

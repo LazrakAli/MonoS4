@@ -1,0 +1,50 @@
+    TD 5 structure de donée
+
+
+TAS:Arbre binaire tassé a gauche
+    Arbre binaire: Chaque noeud a 2 fils aux maximum
+    Complet : Si tout les niveaux sont complet sauf le dernier
+    tassé a gauche: On place les nouveaux element le plus a gauche possible
+    Ordonné : chaque noeud est plus petit que c'est fils
+
+
+Supprimer le minimum du tas :
+    Supprimer racine(min)
+    Mettre du dernier element du tas 
+    faire des swap successif
+
+Inserer un element:
+    Mettre element à la fin du tas(le plus a gauche)
+     successif pour verifier la proprite d'ordonement 
+
+
+Nombre de noeud a l'etage i+1 = nombre de noeud a l'etage i*2(Au maximum)
+    hauteur h: sigma(2^i) < n <= sigma(2^i)      ------------> 2^h < n <= 2^(h+1)-1    ------------> 2^h<=n<2^(h+1)
+                i=0 -> h-1          i=0 -> h
+
+n elements:
+    Quelle est la hauteur h de mon tas
+        2^h <= n < 2^(h+1)
+        log²(2^h) <= log²(n) < log²(2^(h+1))
+        h <= log²(n) < h+1
+
+
+Complexite pire cas insertion element:
+    Si tas a n elements complexité pire cas de l'insertion obtenue quand on doit swaper l'élement inserer jusqu'a
+    la racine. Dans ce cas on doit faire h=log²(n) swap
+    Complexité O(h)->O(log²(n))
+
+Complexite pire cas Suprresion la plus petite clé:
+    ->Supprimer racine 
+    ->Echange eleement avec racine
+    ->h swappeur clés ordre la racine
+Complexite O(log²(n))
+
+
+Exercice 2: Tas ternaire
+
+hauteur h: sigma(3^i) < n <= sigma(3^i) => (3^h -1)/2 < n < 3^(h+1)/2 => 3^h < 2*n <= 3^(h+1)
+           i=0->h-1          i=0->h
+                                            h <= log3(2*n) < h+1
+
+

@@ -1,0 +1,22 @@
+Exercice1:
+1)
+select s.NOMSP
+from sport s
+where s.sid not in (select sid from epreuve e where (datediff(day,DATEDEBUT,DATEFIN )+1)<>1);
+
+2)
+select nomsp
+from sport
+where sid not in (select sid from epreuve where lower(categorie)='mixte');
+
+3)
+select distinct eqid 
+from athletesequipe ae
+where ae.eqid not in (select eqid from ATHLETESEQUIPE ae1, RANGINDIVIDUEL ri where ri.aid=ae1.aid and ri.rang<=3);
+
+4)
+select datenaissance,codepays
+from athlete
+where datenaissance >= all (select datenaissance from ATHLETE where datenaissance is not null);
+
+BASE FOOFLE:

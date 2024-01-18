@@ -1,0 +1,37 @@
+Exercice 1:
+
+partie 1:
+1)Le code compile sans déclarer d'erreur. Quand on essaye de l'executer il nous declare une erreur.
+
+2)Apres l'iteration ou i vaut 0 la valeur passe a 4294967295, i doit avoir pour valeur -1 pour sortir de la boucle. On essai d'acceder a une case du tableau non existente d'ou l'erreur de segmentation
+
+3) on peut tout simplement enlever le unsigned, ou changer la condition du for en mettant l'indice maximale du tableau en condition (i<len)
+
+partie 2:
+
+1) Le code est censée creer une addresse et l'afficher.Compilition reussite Execution : Erreur de segmentation
+2)lors de l'affichage de new->rue on obtient 0x0; Ainsi rien n'as ete copie.Le programme s'arrete
+3)L'erreur est que nous utilisions strcpy sans avoir allouer l'espace necessaire avant ainsi, il faut ou utiliser strdup ou faire un malloc de la taille de r pour new->rue 
+
+partie 3:
+
+1)Le code mais en place une structure ayant comme champs un tableau ayant un taille max et la position(Le nombre de valeur entrer dans le tab)n
+    dans le main on initialise la structure avec un tab de taille max 100
+    et on ajoute 5 valeur 
+    on affiche le tab puis on free la structure
+
+    La compilation est bonne,l'excution aussi.
+
+2)Je vois ici deux probleme principaux 
+    1)lors de l'ajout d'un element on ne verifie pas si la taille max a etait atteinte.
+    2)on free la structure mais pas le tableau dans la structure
+
+3)Il y'a une fuite memoire de la taille du tableau tab de la strucute t
+
+4) On ajoute free(t->tab) avant free(t).
+
+Exercice 2:
+
+1)Le premier permet cree un tableau vierge,.
+
+2)

@@ -1,0 +1,99 @@
+TD: 
+exercice 1:
+
+1)
+select count(*)
+from Athlete a, Pays p
+where a.codePays=p.codePays and lower(p.nomp)='france';
+
+2)
+select s.nomsp,e.nomep,e.categorie
+from epreuve e,sport s
+where s.sid=e.sid 
+order by s.nomsp,e.nomep DESC;
+
+3)
+select a.nomath, a.prenomAth
+from athlete a
+where lower(a.codepays)='fra' and a.aid in (select ae.aid from athletesequipe ae);
+
+4)
+select s.nomsp,e.nomep,e.categorie
+from epreuve e, sport s
+where s.sid=e.sid and epid in (select epid from rangequipe);
+
+5)
+
+Exercice 1:
+1)
+select nom,prenom
+from Athlete
+where lower(pays)='inde';
+
+2)
+select prenom
+from Athlete
+where lower(nom)='gold'
+
+3)
+select PAYS
+from Athlete
+where lower(nom)='aono' and lower(prenom)='ryo'
+
+4)
+select Sport,Epreuve,NOMATH,PRENOMATH
+from rangepreuve
+where rang=1
+order by sport,epreuve;
+
+OU 
+
+select NOMATH,PRENOMATH
+from rangepreuve
+where rang=1
+order by sport,epreuve;
+
+5)
+select distinct sport,epreuve,categorie
+from rangepreuve
+order by DATEFIN;
+
+6)
+select nom,prenom
+from ATHLETE
+where DATENAISSANCE between '1990-01-01' and '1995-12-31'
+
+7)
+select nom,prenom
+from ATHLETE a
+where lower(a.pays)='suisse' and exists(
+    select * 
+    from rangepreuve r 
+    where r.nomath=a.nom and r.prenomath=a.prenom and lower(r.sport)='biathlon' and RANG is NULL);
+
+
+8)
+select distinct sport,epreuve,categorie
+from RANGepreuve
+
+minus
+
+select distinct sport,epreuve,categorie
+from rangepreuve r
+where r.rang=2;
+
+9)
+select distinct s.nomsp,e.nomep,e.categorie
+from SPORT s, EPREUVE e
+where s.sid=e.sid and exists (
+    select * 
+    from RANGINDIVIDUEL ri 
+    where ri.epid=e.epid
+);
+
+10)
+select a.nomath, a.prenomath, a.CODEPAYS, ri.rang
+from athlete a, rangindividuel ri,epreuve e , sport s 
+where a.aid=ri.aid and e.sid=s.sid and e.epid=ri.epid and lower(e.categorie)='femmes' and e.nomep='1000m' and s.NOMSP='Patinage de vitesse'
+
+order by rang;

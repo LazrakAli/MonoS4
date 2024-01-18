@@ -1,0 +1,23 @@
+
+Exercice 3: Mise à jour de table
+
+1)
+insert into Employe(NUMSS,PrenomE) values (12456,ALAIN);
+Le nom est obligatoire
+
+2)
+'21456' qui s appelle 'LARS Anna', qui habite 'Paris' et qui est
+née le 25-08-1975.
+insert into Employe(NumSS,NomE,PrenomE,VILLEE,DATENAISS) values ('21456','LARS','Anna','Paris','25-08-1975');
+
+3)
+insert into projet values (78143,'ORCA','21456','Paris','250000');
+sans probleme
+
+4)
+insert into GRILLE_SAL values ('Responsable' ,80000),('Developpeur' ,45000),('Technicien' ,35000);
+
+5)
+Alain fait pas partie de la basede donné et il n existe pas de testeur dans la grille de salaire.
+
+6)

@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "stdlib.h": "c",
+        "exo3.h": "c",
+        "string.h": "c"
+    }
+}

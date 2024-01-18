@@ -1,0 +1,85 @@
+
+1)
+select count(*)
+from ATHLETE ;
+
+2)
+select count(distinct AID )
+from RANGINDIVIDUEL ;
+
+3)
+select round(avg(datediff(day,datenaissance,'2014-02-06')/365.25),1) as Moyenne_age_athlete_français
+from ATHLETE 
+where CODEPAYS='FRA';
+
+4)
+select ' Durée moyenne=' || round(avg(datediff(day,DATEDEBUT ,DATEFIN )+1),2) || ' min=' || min(datediff(day,DATEDEBUT ,DATEFIN )+1) || ' max=' || max(datediff(day,DATEDEBUT ,DATEFIN )+1) as recherche
+from epreuve;
+
+5)
+select round(1.0*count(AID)/count(distinct CODEPAYS ),3)
+from ATHLETE ;
+
+6)
+select P.NOMP,count(*)
+from ATHLETE a,PAYS p
+where P.CODEPAYS =a.CODEPAYS 
+group by NOMP
+order by count(*);
+
+7)
+select round(avg(moyenne),3)
+from (select NOMP,count(*) as moyenne from ATHLETE a,PAYS p
+where P.CODEPAYS =a.CODEPAYS 
+group by NOMP)
+;
+
+8)
+select EQID ,count(*)
+from ATHLETESEQUIPE 
+group by EQID 
+order by count(*) desc;
+
+9)
+select '('||CATEGORIE ||','||count(*)||')' as recherche
+from EPREUVE  
+group by CATEGORIE ;
+
+10)
+select s.nomsp,count(*)
+from SPORT s,EPREUVE e
+where s.sid=e.sid
+group by s.sid,s.nomsp
+order by count(*) desc;
+
+11)
+select a.CODEPAYS,count(*) as nb_medaille ,count(distinct ri.aid) as athlete_medaille
+from ATHLETE a,RANGINDIVIDUEL ri
+where ri.aid=a.aid and ri.RANG <=3 
+group by codePays
+order by codepays,nb_medaille desc;
+
+12)
+select EQID
+from ATHLETESEQUIPE 
+group by EQID 
+having count(*)=10;
+
+13)
+select EQID
+from ATHLETESEQUIPE 
+group by EQID 
+having count(*) >= all (select count(*)
+from ATHLETESEQUIPE 
+group by EQID);
+
+14)
+
+15)
+select NOMP 
+from PAYS p,ATHLETE a,RANGINDIVIDUEL ri
+where p.codepays=a.codepays and ri.aid=a.aid and ri.rang<=3 
+group by p.NOMP
+having count(*)>=20;
+
+16)

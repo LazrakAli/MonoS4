@@ -1,0 +1,44 @@
+TD Question 4: 
+a)
+select distinct a.nomath, a.prenomath
+from athlete a
+where a.aid <> all (select distinct ri.aid from RANGINDIVIDUEL ri where ri.rang<=3) and  a.aid <> all 
+(select distinct ae.aid from RANGEQUIPE  re, ATHLETESEQUIPE ae where a.aid=ae.aid and ae.eqid=re.eqid  and re.rang<=3);
+
+b)
+select distinct p.nomp
+from pays p
+where p.codepays <> all 
+        (select distinct a.codepays from athlete a, RANGINDIVIDUEL ri where ri.aid=a.aid and ri.rang<=3) 
+        and p.codepays <>all 
+        (select distinct e.codepays from equipe e, rangequipe re where re.eqid=e.eqid and re.eqid<=3)
+        and p.codepays =any 
+        (select a1.codepays from athlete a1); 
+
+Tme:
+
+Exercice 1:
+1)
+select s.nomsp
+from sport s
+where  1 =all (select datediff(day,datedebut,datefin)+1 from epreuve ep where s.sid
+
+2)
+select s.nomsp
+from sport s
+where  'mixte' <>all (select lower(ep.categorie) from epreuve ep where s.sid=ep.sid);
+
+3)
+select distinct ae.eqid
+from athletesequipe ae
+where ae.eqid <> all (select ae.eqid from athletesequipe ae, rangindividuel ri where ae.aid=ri.aid and ri.rang<=3);
+
+4)
+select datenaissance,codepays
+from athlete
+where datenaissance >= all (select datenaissance from athlete where datenaissance is not null);
+
+5)
+select a.datenaissance,a.codepays
+from athlete a
+where a.datenaissance >= all (select a1.datenaissance from athlete a1 where a1.datenaissance is not null and a1.codepays=a.codepays) and a.datenaissance is not null;

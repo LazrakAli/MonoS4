@@ -1,0 +1,73 @@
+
+/* Exercice 1 */
+
+drop all objects; 
+create domain dnumss as numeric(5) check (length(value)=5);
+create domain dchaines as varchar(20);
+create domain dville as varchar(9) check (value in ('Paris','Lyon','Marseille'));
+create domain dnumprojet as numeric(7) check (length(value)>=5);
+create domain dsalaire as numeric(7,2) check (value<90000);
+create domain dbudget as numeric(6);
+create domain ddatenaiss as date check (datediff(year,value,current_date())<70);
+
+create table Employe(
+    NumSS dnumss not null,
+    NomE dchaines not null,
+    PrenomE dchaines not null,
+    Numchef dnumss ,
+    villeE dville,
+    dateNaiss ddatenaiss,
+    constraint pk_employe primary key(NumSS),
+    constraint u_key unique(nomE,prenomE),
+    constraint fk_employe foreign key(Numchef) references Employe
+);
+
+create table projet(
+    NumProj dnumprojet not null,
+    NomProj dchaines not null,
+    RespProj dnumss not null,
+    VilleP dville,
+    Budget dbudget,
+    constraint pk_projet primary key(NumProj),
+    constraint fk_projet foreign key (RespProj) references Employe
+);
+create table Grille_Sal(
+    Profil varchar(20),
+    Salaire dsalaire,
+    constraint p_key primary key(Salaire)
+);
+
+create table embauche(
+    NumSS dnumss not null,
+    NumProj dnumprojet not null,
+    DateEmb date not null,
+    Profil varchar(20) not null,
+    constraint pk_embauche primary key(NumSS),
+    constraint fk_embauche foreign key(NumProj) references Projet,
+    constraint fk1_embauche foreign key(Profil) references Grille_Sal
+);
+
+Alter table projet add constraint ck_villeP check (not exists (select * from employe e, projet p where e.numSS=p.respProj and P.villeP != e.villeE));
+
+
+
+/*insertion d'un Employe*/
+INSERT INTO employe(NUMSS, NOME, PRENOME, NUMCHEF, VILLEE, DATENAISS) VALUES ('12345', 'Smith', 'John', null, 'Paris', parsedatetime('25-08-1975', 'dd-MM-yyyy'));
+INSERT INTO employe(NUMSS, NOME, PRENOME, NUMCHEF, VILLEE, DATENAISS) VALUES ('21456', 'LARS', 'Anna', null, 'Paris', parsedatetime('25-08-1975', 'dd-MM-yyyy'));
+
+
+
+create table ville(
+    nom varchar(20),
+    population numeric(12),
+    pays varchar(50)
+);
+
+create table Pays (
+    nom varchar(20),
+    capitale varchar(30),
+    constraint pk_pays primary key(nom),
+    constraint fk_pays foreign key(capitale) references ville(nom)
+);
+
+alter table ville add constraint fk_ville foreign key(pays) references pays;

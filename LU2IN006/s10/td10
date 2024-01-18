@@ -1,0 +1,44 @@
+Exercice 1:
+Q-1.1)
+struct User{
+    int n;
+    int d;//(n,d)=clée publique
+    char *name;//nom
+}
+
+struct Transaction{
+    User* debiteur;
+    User* beneficiare;
+    int montant;
+    char *date;
+    int *signature;//chiffre du hashe de la fin de la transaction
+}
+//hashFunction ne depend pas de la signature
+
+
+
+//C'est le debiteur qui appelle cette fonction, avec sa cle privée
+void signe(Transaction *T,int n,int e){
+    T>signature=chiffre(HashFunction(T),n,e);
+}
+
+int verify(Transaction *T){
+    return HashFunction(T)==Dechiffrer(T->signature,T->debiteur->n,T->debiteur->n);
+}
+
+
+
+Exercice 2:
+
+struct registre{
+    Transaction *T;
+    registre *suivant;
+};
+
+registre* inserer(registre *r,Transaction *t){
+    p=malloc(sizeof(registre));
+    p->T=t;
+    p->suivant=r;
+    return P;
+}
+
